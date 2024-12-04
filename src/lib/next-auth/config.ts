@@ -11,6 +11,9 @@ export const nextAuthOptions: AuthOptions = {
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   pages: {
     signIn: "/home",
   },

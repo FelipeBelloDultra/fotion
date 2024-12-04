@@ -6,9 +6,24 @@ import { Button } from "./ui/button";
 export function SignIn() {
   return (
     <div>
-      <Button onClick={() => signIn("github")}>Sign In</Button>
+      <Button
+        onClick={() =>
+          signIn("github", {
+            callbackUrl: "/",
+          })
+        }
+      >
+        Sign In
+      </Button>
 
-      <Button variant="secondary" onClick={() => signOut()}>
+      <Button
+        variant="secondary"
+        onClick={() =>
+          signOut({
+            callbackUrl: "/home",
+          })
+        }
+      >
         Sign Out
       </Button>
     </div>
