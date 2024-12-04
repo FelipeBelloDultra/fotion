@@ -51,6 +51,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  pages         Page[]
 
   @@map("users")
 }
@@ -62,4 +63,23 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+model Page {
+  id         String   @id @default(uuid())
+  title      String   @default("Untitled")
+  position   Int      @default(1)
+  content    String   @db.Text
+  isFavorite Boolean  @default(false) @map("is_favorite")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("update_at")
+  ownerId    String   @map("owner_id")
+  parentId   String?  @map("parent_id")
+
+  owner  User  @relation(fields: [ownerId], references: [id])
+  parent Page? @relation("ParentChildPages", fields: [parentId], references: [id])
+
+  nestedPages Page[] @relation("ParentChildPages")
+
+  @@map("pages")
 }
