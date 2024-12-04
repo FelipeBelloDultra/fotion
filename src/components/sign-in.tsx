@@ -8,7 +8,7 @@ export function SignIn() {
     <div>
       <Button onClick={() => signIn("github")}>Sign In</Button>
 
-      <Button variant="secondary" onClick={() => signOut}>
+      <Button variant="secondary" onClick={() => signOut()}>
         Sign Out
       </Button>
     </div>
