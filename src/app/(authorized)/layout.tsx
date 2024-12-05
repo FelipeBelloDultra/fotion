@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 
 import { nextAuthOptions } from "@/lib/next-auth/config";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export default async function AuthorizedLayout({
@@ -16,6 +16,7 @@ export default async function AuthorizedLayout({
   return (
     <SidebarProvider>
       <AppSidebar />
+      <SidebarTrigger />
       {children}
     </SidebarProvider>
   );
