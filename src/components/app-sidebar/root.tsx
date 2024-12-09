@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as React from "react";
 
 import {
@@ -12,15 +13,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { NavUser } from "../nav-user";
 import { File } from "lucide-react";
 import Link from "next/link";
+import { NavUser } from "./nav-user";
 
-const user = {
-  email: "felipe_bello_dultra@hotmail.com",
-  avatar: "https://avatars.githubusercontent.com/u/51035716?v=4",
-  name: "Felipe Bello Dultra",
-};
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  navUser: ReturnType<typeof NavUser>;
+}
 
 const data = {
   favorites: [
@@ -49,8 +48,7 @@ const data = {
   ],
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Tree({ item }: { item: string | any[] }) {
+function ItemsTree({ item }: { item: string | any[] }) {
   const [name, ...items] = Array.isArray(item) ? item : [item];
 
   if (!items.length) {
@@ -77,13 +75,13 @@ function Tree({ item }: { item: string | any[] }) {
         </Link>
       </SidebarMenuButton>
       {items.map((subItem, index) => (
-        <Tree key={index} item={subItem} />
+        <ItemsTree key={index} item={subItem} />
       ))}
     </div>
   );
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ navUser, ...props }: AppSidebarProps) {
   return (
     <Sidebar {...props}>
       <SidebarContent>
@@ -110,7 +108,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu>
               {data.tree.map((item, index) => (
-                <Tree key={index} item={item} />
+                <ItemsTree key={index} item={item} />
               ))}
               <SidebarMenuButton asChild>
                 <Link href="/">
@@ -123,9 +121,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
-        <NavUser user={user} />
-      </SidebarFooter>
+      <SidebarFooter>{navUser}</SidebarFooter>
 
       <SidebarRail />
     </Sidebar>

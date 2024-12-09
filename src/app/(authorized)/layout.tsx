@@ -11,11 +11,19 @@ export default async function AuthorizedLayout({
 }>) {
   const session = await getServerSession(nextAuthOptions);
 
-  console.log(session);
-
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar.Root
+        navUser={
+          <AppSidebar.NavUser
+            user={{
+              name: session?.user?.name || "",
+              email: session?.user?.email || "",
+              avatar: session?.user?.image || undefined,
+            }}
+          />
+        }
+      />
       <SidebarTrigger />
       {children}
     </SidebarProvider>
