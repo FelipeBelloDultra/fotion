@@ -8,19 +8,13 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavUser } from "./nav-user";
-import { ChevronRight, File, Folder } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "./ui/collapsible";
+import { File } from "lucide-react";
+import Link from "next/link";
 
 const user = {
   email: "felipe_bello_dultra@hotmail.com",
@@ -29,18 +23,9 @@ const user = {
 };
 
 const data = {
-  changes: [
+  favorites: [
     {
-      file: "README.md",
-      state: "M",
-    },
-    {
-      file: "api/hello/route.ts",
-      state: "U",
-    },
-    {
-      file: "app/layout.tsx",
-      state: "M",
+      file: "Note 1",
     },
   ],
   tree: [
@@ -51,23 +36,16 @@ const data = {
         ["hello", ["route.ts"]],
         "page.tsx",
         "layout.tsx",
-        ["blog", ["page.tsx"]],
+        [
+          "blog",
+          [
+            "blog",
+            ["blog", ["blog", ["page.tsx", ["blog", ["blog", ["page.tsx"]]]]]],
+          ],
+        ],
       ],
     ],
-    [
-      "components",
-      ["ui", "button.tsx", "card.tsx"],
-      "header.tsx",
-      "footer.tsx",
-    ],
-    ["lib", ["util.ts"]],
-    ["public", "favicon.ico", "vercel.svg"],
     ".eslintrc.json",
-    ".gitignore",
-    "next.config.js",
-    "tailwind.config.js",
-    "package.json",
-    "README.md",
   ],
 };
 
@@ -78,34 +56,30 @@ function Tree({ item }: { item: string | any[] }) {
   if (!items.length) {
     return (
       <SidebarMenuButton
-        isActive={name === "button.tsx"}
-        className="data-[active=true]:bg-transparent"
+        isActive={name === "page.tsx"} // TODO::: Fix this rule with current path
+        className="data-[active=true]:underline"
+        asChild
       >
-        <File />
-        {name}
+        <Link href="/">
+          <File />
+          {name}
+        </Link>
       </SidebarMenuButton>
     );
   }
 
   return (
-    <SidebarMenuItem>
-      <Collapsible className="group/collapsible [&[data-state=open]>button>svg:first-child]:rotate-90">
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton>
-            <ChevronRight className="transition-transform" />
-            <Folder />
-            {name}
-          </SidebarMenuButton>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <SidebarMenuSub>
-            {items.map((subItem, index) => (
-              <Tree key={index} item={subItem} />
-            ))}
-          </SidebarMenuSub>
-        </CollapsibleContent>
-      </Collapsible>
-    </SidebarMenuItem>
+    <div className="pl-3 border-l flex flex-col gap-1">
+      <SidebarMenuButton asChild>
+        <Link href="/">
+          <File />
+          {name}
+        </Link>
+      </SidebarMenuButton>
+      {items.map((subItem, index) => (
+        <Tree key={index} item={subItem} />
+      ))}
+    </div>
   );
 }
 
@@ -114,28 +88,36 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar {...props}>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Changes</SidebarGroupLabel>
+          <SidebarGroupLabel>My favorites</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.changes.map((item, index) => (
+              {data.favorites.map((item, index) => (
                 <SidebarMenuItem key={index}>
-                  <SidebarMenuButton>
-                    <File />
-                    {item.file}
+                  <SidebarMenuButton asChild>
+                    <Link href="/">
+                      <File />
+                      {item.file}
+                    </Link>
                   </SidebarMenuButton>
-                  <SidebarMenuBadge>{item.state}</SidebarMenuBadge>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
         <SidebarGroup>
-          <SidebarGroupLabel>Files</SidebarGroupLabel>
+          <SidebarGroupLabel>All pages</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {data.tree.map((item, index) => (
                 <Tree key={index} item={item} />
               ))}
+              <SidebarMenuButton asChild>
+                <Link href="/">
+                  <File />
+                  name
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
