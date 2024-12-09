@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { NavUser } from "./nav-user";
+import { NavUser } from "../nav-user";
 import { File } from "lucide-react";
 import Link from "next/link";
 
