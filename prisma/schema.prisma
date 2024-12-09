@@ -69,6 +69,7 @@ model Page {
   id         String   @id @default(uuid())
   title      String   @default("Untitled")
   position   Int      @default(1)
+  iconEmoji  String?  @map("icon_emoji")
   content    String   @db.Text
   isFavorite Boolean  @default(false) @map("is_favorite")
   createdAt  DateTime @default(now()) @map("created_at")
