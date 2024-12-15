@@ -27,6 +27,13 @@ export const nextAuthOptions: AuthOptions = {
         data: user,
       });
 
+      await prisma.page.create({
+        data: {
+          content: "Welcome to Fotion. Let's start taking notes, the easy way.",
+          ownerId: createdUser.id,
+        },
+      });
+
       return createdUser as AdapterUser;
     },
   },
